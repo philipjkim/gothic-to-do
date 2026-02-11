@@ -1,0 +1,33 @@
+{
+  "name": "gothic-to-do",
+  "version": "1.0.0",
+  "description": "GoTHIC 스택으로 만든 To-Do 웹 애플리케이션. JavaScript 로직을 최소화하고 서버 사이드 렌더링 중심으로 동작합니다.",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/philipjkim/gothic-to-do.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/philipjkim/gothic-to-do/issues"
+  },
+  "homepage": "https://github.com/philipjkim/gothic-to-do#readme",
+  "devDependencies": {
+    "@tailwindcss/cli": "^4.1.18",
+    "daisyui": "^5.5.18",
+    "tailwindcss": "^4.1.18"
+  },
+  "volta": {
+    "node": "25.6.1",
+    "npm": "11.9.0"
+  }
+}
