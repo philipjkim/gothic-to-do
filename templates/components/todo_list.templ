@@ -1,0 +1,87 @@
+package components
+
+import "github.com/philipjkim/gothic-to-do/internal/model"
+
+templ TodoList(todos []*model.Todo) {
+	if len(todos) == 0 {
+		<div class="card bg-base-100 shadow-md">
+			<div class="card-body items-center text-center py-12">
+				<p class="text-base-content/50 text-lg">No todos yet. Add one above!</p>
+			</div>
+		</div>
+	} else {
+		<div class="card bg-base-100 shadow-md">
+			<div class="card-body p-4">
+				<div class="flex flex-col divide-y divide-base-200">
+					for _, todo := range todos {
+						@TodoItem(todo)
+					}
+				</div>
+			</div>
+		</div>
+	}
+}
+
+// TodoItem - Alpine.js inline editing + HTMX server sync
+templ TodoItem(todo *model.Todo) {
+	<div
+		id={ todo.ID }
+		class="flex items-center gap-3 py-3 group"
+		x-data="{ editing: false }"
+	>
+		<!-- Toggle completion: HTMX -->
+		<input
+			type="checkbox"
+			class="checkbox checkbox-primary"
+			if todo.Completed {
+				checked
+			}
+			hx-patch={ "/todos/" + todo.ID + "/toggle" }
+			hx-target="#todo-list"
+			hx-swap="innerHTML"
+		/>
+
+		<!-- View mode -->
+		<span
+			x-show="!editing"
+			@dblclick="editing = true"
+			class={ "flex-1 cursor-pointer select-none", templ.KV("line-through opacity-50", todo.Completed) }
+		>
+			{ todo.Title }
+		</span>
+
+		<!-- Edit mode: Alpine.js toggle + HTMX save -->
+		<form
+			x-show="editing"
+			x-cloak
+			hx-put={ "/todos/" + todo.ID }
+			hx-target="#todo-list"
+			hx-swap="innerHTML"
+			@htmx:after-request.window="editing = false"
+			class="flex-1 flex gap-2"
+		>
+			<input
+				type="text"
+				name="title"
+				value={ todo.Title }
+				class="input input-bordered input-sm flex-1"
+				x-ref="editInput"
+				@keydown.escape="editing = false"
+			/>
+			<button type="submit" class="btn btn-sm btn-success">Save</button>
+			<button type="button" @click="editing = false" class="btn btn-sm btn-ghost">Cancel</button>
+		</form>
+
+		<!-- Delete button: HTMX -->
+		<button
+			x-show="!editing"
+			hx-delete={ "/todos/" + todo.ID }
+			hx-target="#todo-list"
+			hx-swap="innerHTML"
+			hx-confirm="Are you sure you want to delete this?"
+			class="btn btn-ghost btn-sm opacity-0 group-hover:opacity-100 transition-opacity text-error"
+		>
+			✕
+		</button>
+	</div>
+}
