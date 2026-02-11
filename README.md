@@ -1,86 +1,87 @@
 # gothic-to-do
 
-GoTHIC 스택으로 만든 To-Do 웹 애플리케이션. JavaScript 로직을 최소화하고 서버 사이드 렌더링 중심으로 동작합니다.
+A To-Do web application built with the GoTHIC stack. Minimal JavaScript, maximum server-side rendering.
 
-## GoTHIC 스택
+> **[한국어 README](README_kr.md)**
 
-| 기술 | 역할 |
-|------|------|
-| **Go + Gin** | 웹 서버, 라우팅, 미들웨어 |
-| **Templ** | Go 타입 안전 HTML 템플릿 엔진 |
-| **HTMX** | HTML 속성만으로 AJAX 요청 및 DOM 교체 |
-| **Alpine.js** | 클라이언트 전용 상태 관리 (토글, 모달 등) |
-| **TailwindCSS + DaisyUI** | 유틸리티 퍼스트 CSS + UI 컴포넌트 |
-| **air** | Go 핫 리로드 |
+## GoTHIC Stack
 
-핵심 아이디어: **서버가 HTML을 렌더링하고, 브라우저는 그걸 잘 보여준다.** HTMX가 서버 통신을, Alpine.js가 클라이언트 인터랙션을 담당하며, 역할이 명확히 분리되어 JavaScript를 직접 작성할 일이 거의 없습니다.
+| Technology | Role |
+|------------|------|
+| **Go + Gin** | Web server, routing, middleware |
+| **Templ** | Type-safe HTML template engine for Go |
+| **HTMX** | AJAX requests & DOM swaps via HTML attributes |
+| **Alpine.js** | Client-only state management (toggles, modals, etc.) |
+| **TailwindCSS + DaisyUI** | Utility-first CSS + UI components |
+| **air** | Go hot-reload |
 
-## 사전 요구사항
+Core idea: **The server renders HTML, and the browser displays it.** HTMX handles server communication, Alpine.js handles client-side interactions — responsibilities are clearly separated, so you rarely need to write JavaScript directly.
 
-- **Go** 1.26+ (asdf로 관리, `.tool-versions` 참조)
-- **Node.js** 25+ / **npm** 11+ (Volta로 관리, `package.json`의 `volta` 섹션 참조)
+## Prerequisites
+
+- **Go** 1.26+ (managed with asdf, see `.tool-versions`)
+- **Node.js** 25+ / **npm** 11+ (managed with Volta, see `volta` section in `package.json`)
 - **templ** CLI: `go install github.com/a-h/templ/cmd/templ@latest`
 - **air**: `go install github.com/air-verse/air@latest`
 
-## 프로젝트 구조
+## Project Structure
 
 ```
 gothic-to-do/
-├── cmd/server/main.go          # 엔트리포인트
+├── cmd/server/main.go          # Entry point
 ├── internal/
-│   ├── handler/todo.go         # Gin HTTP 핸들러
-│   ├── model/todo.go           # Todo 모델
-│   └── store/memory.go         # 인메모리 스토어
+│   ├── handler/todo.go         # Gin HTTP handlers
+│   ├── model/todo.go           # Todo model
+│   └── store/memory.go         # In-memory store
 ├── templates/
-│   ├── layout.templ            # HTML 레이아웃 (HTMX, Alpine.js CDN 로드)
-│   ├── index.templ             # 메인 페이지
-│   ├── todo_form.templ         # 입력 폼 + 테마 토글 (Alpine.js)
-│   └── todo_list.templ         # 할일 목록/아이템 (HTMX + Alpine.js)
+│   ├── layout.templ            # HTML layout (loads HTMX, Alpine.js via CDN)
+│   ├── index.templ             # Main page
+│   ├── todo_form.templ         # Input form + theme toggle (Alpine.js)
+│   └── todo_list.templ         # Todo list/items (HTMX + Alpine.js)
 ├── static/css/
-│   ├── input.css               # Tailwind 입력 파일
-│   └── output.css              # Tailwind 빌드 결과 (gitignore)
-├── .air.toml                   # air 설정
-├── tailwind.config.js          # TailwindCSS + DaisyUI 설정
-└── Makefile                    # 개발/빌드 명령어
+│   ├── input.css               # Tailwind input file
+│   └── output.css              # Tailwind build output (gitignored)
+├── air.toml                    # air configuration
+└── Makefile                    # Dev/build commands
 ```
 
-## 설치 및 실행
+## Getting Started
 
 ```bash
-# Go 의존성
+# Go dependencies
 go mod tidy
 
-# Node 의존성 (TailwindCSS + DaisyUI)
+# Node dependencies (TailwindCSS + DaisyUI)
 npm install
 
-# 개발 서버 실행 (air 핫 리로드 + Tailwind watch)
+# Start dev server (air hot-reload + Tailwind watch)
 make dev
 ```
 
-브라우저에서 http://localhost:8080 접속.
+Open http://localhost:8080 in your browser.
 
-## HTMX vs Alpine.js 사용 기준
+## When to Use HTMX vs Alpine.js
 
 ```mermaid
 flowchart LR
-    A[사용자 액션] --> B{서버 필요?}
+    A[User Action] --> B{Needs server?}
     B -- Yes --> C[HTMX]
-    B -- No --> D{UI 상태 변경?}
+    B -- No --> D{UI state change?}
     D -- Yes --> E[Alpine.js]
-    D -- No --> F[순수 CSS]
-    C -. "둘 다 필요한 경우
-    (예: 인라인 편집)" .-> E
+    D -- No --> F[Pure CSS]
+    C -. "Both needed
+    (e.g. inline edit)" .-> E
 ```
 
-- **HTMX**: CRUD 작업, 폼 제출 등 서버 데이터 변경이 필요한 경우
-- **Alpine.js**: 테마 토글, 인라인 편집 모드 전환 등 클라이언트 전용 UI 상태
-- **둘 다**: 인라인 편집처럼 UI 전환(Alpine.js) + 서버 저장(HTMX)이 모두 필요한 경우
+- **HTMX**: CRUD operations, form submissions — anything requiring server-side data changes
+- **Alpine.js**: Theme toggle, inline edit mode — client-only UI state
+- **Both**: Inline editing where UI switching (Alpine.js) + server persistence (HTMX) are both needed
 
-## 주요 명령어
+## Commands
 
 ```bash
-make dev          # 개발 서버 (air + tailwind --watch)
-make build        # 프로덕션 빌드
-make templ        # templ generate만 실행
-make css          # TailwindCSS 빌드만 실행 (minify)
+make dev          # Dev server (air + tailwind --watch)
+make build        # Production build
+make templ        # Run templ generate only
+make css          # Run TailwindCSS build only (minified)
 ```
