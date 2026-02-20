@@ -37,7 +37,8 @@ gothic-to-do/
 │   ├── layout.templ            # HTML layout (loads HTMX, Alpine.js via CDN)
 │   ├── index.templ             # Main page
 │   ├── todo_form.templ         # Input form + theme toggle (Alpine.js)
-│   └── todo_list.templ         # Todo list/items (HTMX + Alpine.js)
+│   ├── todo_item.templ         # Single todo item (HTMX + Alpine.js)
+│   └── todo_list.templ         # Todo list container
 ├── static/css/
 │   ├── input.css               # Tailwind input file
 │   └── output.css              # Tailwind build output (gitignored)

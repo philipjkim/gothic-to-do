@@ -1,20 +1,19 @@
 package templates
 
 import "github.com/philipjkim/gothic-to-do/internal/model"
-import "github.com/philipjkim/gothic-to-do/templates/components"
 
 templ Index(todos []*model.Todo) {
     @Layout("To-Do App") {
         <div class="flex flex-col gap-6">
             <!-- header: Alpine.js theme toggle -->
-            @components.ThemeToggleHeader()
+            @ThemeToggleHeader()
 
             <!-- To-Do Input Form -->
-            @components.TodoForm()
+            @TodoForm()
 
             <!-- To-Do List -->
             <div id="todo-list">
-                @components.TodoList(todos)
+                @TodoList(todos)
             </div>
         </div>
     }

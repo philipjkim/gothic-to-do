@@ -35,12 +35,12 @@ gothic-to-do/
 │   ├── layout.templ            # HTML 레이아웃 (HTMX, Alpine.js CDN 로드)
 │   ├── index.templ             # 메인 페이지
 │   ├── todo_form.templ         # 입력 폼 + 테마 토글 (Alpine.js)
-│   └── todo_list.templ         # 할일 목록/아이템 (HTMX + Alpine.js)
+│   ├── todo_item.templ         # 할일 아이템 (HTMX + Alpine.js)
+│   └── todo_list.templ         # 할일 목록 컨테이너
 ├── static/css/
 │   ├── input.css               # Tailwind 입력 파일
 │   └── output.css              # Tailwind 빌드 결과 (gitignore)
-├── .air.toml                   # air 설정
-├── tailwind.config.js          # TailwindCSS + DaisyUI 설정
+├── air.toml                    # air 설정
 └── Makefile                    # 개발/빌드 명령어
 ```
 

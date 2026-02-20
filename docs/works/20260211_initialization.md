@@ -108,7 +108,7 @@ static/css/output.css
 
 1. **Templ 버전 차이**: 블로그 작성 시점과 현재 templ v0.3.977 사이에 API 변경 가능성. `templ.KV` 등 함수 동작 확인 필요
 
-2. **패키지 구조 불일치**: 블로그에서 `templates/components/` 하위 파일이 `package templates`로 선언됨. 하위 디렉토리에 넣으면 별도 패키지가 되므로, 모든 `.templ` 파일을 `templates/`에 flat하게 두거나 import 경로를 맞춰야 함
+2. **패키지 구조 불일치** ✅ 해결: 블로그에서 `templates/components/` 하위 파일이 `package templates`로 선언됨. Go에서 디렉토리 = 패키지이므로 하위 디렉토리에 넣으면 별도 패키지가 됨. → **모든 `.templ` 파일을 `templates/`에 flat하게 두는 것으로 해결.** 블로그 포스트도 flat 구조로 수정함
 
 3. **핸들러 import 누락**: `handler/todo.go`에서 `model` 패키지와 `templ` 패키지 import 선언이 블로그 코드에 빠져있음
 
