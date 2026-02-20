@@ -114,6 +114,10 @@ static/css/output.css
 
 4. **TailwindCSS v4 호환성**: `npm install -D tailwindcss @tailwindcss/cli daisyui` 시 v4가 설치될 수 있음. v4는 `tailwind.config.js` 대신 CSS-first 설정 방식이므로 블로그의 v3 설정과 충돌
 
+5. **air 설정 파일명** ✅ 해결: 블로그에서 `.air.toml`(dot prefix)이지만 프로젝트에 `air.toml`(dot 없음)으로 생성함. air는 기본적으로 `.air.toml`을 찾으므로 설정을 못 읽고 루트 디렉토리를 `go build .` 하려다 "no Go files" 에러 발생. → **파일명을 `.air.toml`로 rename하여 해결**
+
+6. **air 무한 리로드** ✅ 해결: air의 `include_ext`에 `go`가 포함되어 있어 `templ generate`로 생성된 `_templ.go` 파일 변경을 감지 → 다시 빌드 → `_templ.go` 재생성 → 무한 루프. → **`exclude_regex`에 `"_templ.go"` 추가하여 해결**
+
 ## 사용자 선호사항
 
 - 코드는 직접 타이핑 (학습 목적)

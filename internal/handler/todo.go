@@ -19,7 +19,7 @@ func NewTodoHandler(store *store.TodoStore) *TodoHandler {
 	return &TodoHandler{store: store}
 }
 
-// render 는 templ 컴포넌트를 gin.Context 에 렌더링하는 헬퍼입니다.
+// render renders a templ component into the gin.Context.
 func render(c *gin.Context, component templ.Component) {
 	c.Header("Content-Type", "text/html; charset=utf-8")
 	if err := component.Render(c.Request.Context(), c.Writer); err != nil {
